@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    EditText Name, Pass, updateold, updatenew, delete;
+    EditText Name, Pass, updateold, updatenew, delete, editaddr, editmob;
     myDbAdapter helper;
 
     @Override
@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
         updatenew = (EditText) findViewById(R.id.editText5);
         delete = (EditText) findViewById(R.id.editText6);
 
+        editaddr = (EditText) findViewById(R.id.editaddr);
+        editmob = (EditText) findViewById(R.id.editmob);
+
+
         helper = new myDbAdapter(this);
     }
 
@@ -29,20 +33,28 @@ public class MainActivity extends AppCompatActivity {
     public void addUser(View view) {
         String t1 = Name.getText().toString();
         String t2 = Pass.getText().toString();
+        String t3 = editaddr.getText().toString();
+        String t4 = editmob.getText().toString();
         if (t1.isEmpty() || t2.isEmpty()) {
 //            Message.message(getApplicationContext(),"Enter Both Name and Password");
             Toast.makeText(MainActivity.this, "Enter Both Name and Password", Toast.LENGTH_SHORT).show();
         } else {
-            long id = helper.insertData(t1, t2);
+            long id = helper.insertData(t1, t2, t3, t4);
             if (id <= 0) {
 //                Message.message(getApplicationContext(),"Insertion Unsuccessful");
                 Toast.makeText(MainActivity.this, "Insertion Unsuccessful", Toast.LENGTH_SHORT).show();
                 Name.setText("");
                 Pass.setText("");
+                editaddr.setText("");
+                editmob.setText("");
+
             } else {
                 Toast.makeText(MainActivity.this, "Insertion successful", Toast.LENGTH_SHORT).show();
                 Name.setText("");
                 Pass.setText("");
+                editaddr.setText("");
+                editmob.setText("");
+
             }
         }
     }
@@ -50,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public void viewdata(View view) {
         String data = helper.getData();
 //        Message.message(this, data);
-        Toast.makeText(MainActivity.this, data+"", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, data + "", Toast.LENGTH_SHORT).show();
 
     }
 

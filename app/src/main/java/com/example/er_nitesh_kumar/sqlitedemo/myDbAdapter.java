@@ -31,7 +31,7 @@ public class myDbAdapter extends SQLiteOpenHelper {
         try {
 //            db.execSQL("CREATE TABLE [Circle] ([CircleCode] TEXT,[CircleName] TEXT )");
 
-            db.execSQL("CREATE TABLE myTable (_id INTEGER PRIMARY KEY AUTOINCREMENT,Name VARCHAR(255),Password VARCHAR(255))");
+            db.execSQL("CREATE TABLE myTable (_id INTEGER PRIMARY KEY AUTOINCREMENT,Name VARCHAR(255),Password VARCHAR(255),Address VARCHAR(255),Mobile VARCHAR(255))");
         } catch (Exception e) {
 //            Message.message(context,""+e);
         }
@@ -80,11 +80,13 @@ public class myDbAdapter extends SQLiteOpenHelper {
 //        // return plantationList;
 //    }
 
-    public long insertData(String name, String pass) {
+    public long insertData(String name, String pass, String addr, String mob) {
         SQLiteDatabase dbb = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Name", name);
         contentValues.put("Password", pass);
+        contentValues.put("Address", addr);
+        contentValues.put("Mobile", mob);
         long id = dbb.insert("myTable", null, contentValues);
         return id;
     }
@@ -137,14 +139,18 @@ public class myDbAdapter extends SQLiteOpenHelper {
 
     public String getData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] columns = {"_id", "Name", "Password"};
+        String[] columns = {"_id", "Name", "Password", "Address", "Mobile"};
         Cursor cursor = db.query("myTable", columns, null, null, null, null, null);
         StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
             int cid = cursor.getInt(cursor.getColumnIndex("_id"));
             String name = cursor.getString(cursor.getColumnIndex("Name"));
             String password = cursor.getString(cursor.getColumnIndex("Password"));
-            buffer.append(cid + "   " + name + "   " + password + " \n");
+            String Address = cursor.getString(cursor.getColumnIndex("Address"));
+            String Mobile = cursor.getString(cursor.getColumnIndex("Mobile"));
+
+
+            buffer.append(cid + "   " + name + "   " + password + "  " + Address + "  " + Mobile + "\n");
         }
         return buffer.toString();
     }
